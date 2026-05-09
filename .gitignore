@@ -1,22 +1,7 @@
-.{
-    .name = .zig_rive,
-    .version = "0.0.0",
-    .fingerprint = 0x2ba3efe0afa7b22b, // Changing this has security and trust implications.
-    .minimum_zig_version = "0.16.0",
-    .dependencies = .{
-        //to update version, run zig fetch --save git+https://github.com/KnightOwl-Git/rive-zig-build
-        .compile_commands = .{
-            .url = "https://github.com/the-argus/zig-compile-commands/archive/9400cd1963ea6bb58fe47ba7d9700075b808cdd2.tar.gz",
-            .hash = "zig_compile_commands-0.0.1-OZg5-e_JAAAGg1WHAePtq4l4Uvjs34BexnFFCZk63EaG",
-        },
-        .rive = .{
-            .url = "git+https://github.com/KnightOwl-Git/rive-zig-build#f5ff4c63e19cddd2cabdb1f985af99257ee868cb",
-            .hash = "rive-0.0.4-QURrJRwgAQAjUjz2pC80fbiea_rqDR-jWdgd_hMquMUC",
-        },
-    },
-    .paths = .{
-        "build.zig",
-        "build.zig.zon",
-        "src",
-    },
-}
+
+.zig-cache/
+zig-out/
+*.o
+.DS_Store
+zig-pkg/
+

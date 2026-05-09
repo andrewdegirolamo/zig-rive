@@ -1,4 +1,0 @@
-0
-50 2191243 1778331409350295048 cb435b8941eef7d95f1b62e389c62846 0 /Volumes/BensBeans1CurrentWork/neovim_projects/zig-rive/src/rive.cpp
-53717 139105905 1762666898000000000 9a6639c5623eebd530c5c97ac8706e50 0 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk/System/Library/Frameworks/Metal.framework/Metal.tbd
-5595577 139117148 1762658762000000000 7660b5b8bb7b68dfad6bd1babdebd8fa 0 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk/System/Library/Frameworks/Foundation.framework/Foundation.tbd
