@@ -10,7 +10,10 @@ pub fn build(b: *std.Build) void {
 
     const optimize = b.standardOptimizeOption(.{});
 
-    const rive = b.dependency("rive", .{});
+    const rive = b.dependency("rive", .{
+        .target = target,
+        .optimize = optimize,
+    });
 
     const translate_c = b.addTranslateC(.{
         .root_source_file = b.path("src/riveWrapper.h"),
@@ -30,10 +33,16 @@ pub fn build(b: *std.Build) void {
         .link_libcpp = true,
     });
 
-    const sdl3 = b.dependency("sdl3", .{});
+    const sdl3 = b.dependency("sdl3", .{
+        .target = target,
+        .optimize = optimize,
+    });
     //platform specific
 
-    const objc = b.dependency("mach_objc", .{});
+    const objc = b.dependency("mach_objc", .{
+        .target = target,
+        .optimize = optimize,
+    });
 
     const example = b.addModule("sdl_rive_example", .{
         .target = target,

@@ -6,6 +6,10 @@ const objc = @import("objc");
 const metal = objc.metal;
 
 pub fn main() !void {
+    //TODO: fix text in debug/releasesafe
+    //TODO fix memory leak, probably get rid of autoreleasepool
+    //TODO start writing zig wrappper
+
     const riv = @embedFile("fuecoco.riv");
 
     //initialize sdl
@@ -37,7 +41,7 @@ pub fn main() !void {
     // nsView.setWantsLayer(true);
 
     const width, const height = try window.getSize();
-    const renderTarget = c.rive_getMetalRenderTarget(renderContext, @intCast(width), @intCast(height)) orelse @panic("null");
+    var renderTarget = c.rive_getMetalRenderTarget(renderContext, @intCast(width), @intCast(height));
     const queue = mtlDevice.newCommandQueue() orelse @panic("null");
     const renderer = c.rive_getRendererFromContext(renderContext);
 
@@ -66,7 +70,7 @@ pub fn main() !void {
         const dt = new_ticks - last_ticks;
         last_ticks = new_ticks;
 
-        try riveRender(swapchain, queue, renderTarget, window, stateMachine, renderContext, renderer, dt);
+        try riveRender(swapchain, queue, &renderTarget, window, stateMachine, renderContext, renderer, dt, artboard);
     }
     defer window.deinit();
     c.rive_freeRenderer(renderer);
@@ -75,42 +79,53 @@ pub fn main() !void {
 fn riveRender(
     metalLayer: *objc.quartz_core.MetalLayer,
     queue: *metal.CommandQueue,
-    target: *c.Rive_RenderTargetMetal,
+    target: *?*c.Rive_RenderTargetMetal,
     window: sdl3.video.Window,
     sm: *c.Rive_StateMachineInstance,
     renderContext: *c.Rive_RenderContext,
     renderer: ?*c.Rive_RiveRenderer,
     dt: u64,
+    artboard: *c.Rive_ArtboardInstance,
 ) !void {
+    const pool = objc.objc.autoreleasePoolPush();
     //advance the state machine
     const dtFloat: f32 = @floatFromInt(dt);
-    c.rive_SMIadvanceAndApply(sm, dtFloat / 1000);
     // std.debug.print("dt: {d}", .{dt});
 
     const pixelDensity = try window.getPixelDensity();
-    _ = pixelDensity;
 
+    const width_p, const height_p = try window.getSizeInPixels();
     const width, const height = try window.getSize();
 
+    c.rive_artboardSetWidth(artboard, @floatFromInt(width));
+    c.rive_artboardSetHeight(artboard, @floatFromInt(height));
+    target.* = c.rive_getMetalRenderTarget(renderContext, @intCast(width_p), @intCast(height_p)) orelse @panic("null");
+    // if (c.rive_renderTargetGetWidth(target.*) != width or c.rive_renderTargetGetHeight(target.*) != height) {
+    //     //window size has changed
+    //
+    // }
+    c.rive_SMIadvanceAndApply(sm, dtFloat / 1000);
+
     var frame = c.Rive_FrameDescriptor{
-        .render_target_width = @intCast(width),
-        .render_target_height = @intCast(height),
+        .render_target_width = @intCast(width_p),
+        .render_target_height = @intCast(height_p),
         .clear_color = 0xffffff,
     };
 
     c.rive_contextBeginFrame(renderContext, &frame);
 
     c.rive_rendererSave(renderer);
+    c.rive_rendererDPIScale(renderer, pixelDensity);
     c.rive_SMIdraw(sm, renderer);
     c.rive_rendererRestore(renderer);
 
     const currentFrameSurface = objc.quartz_core.MetalLayer.nextDrawable(metalLayer) orelse @panic("surface null");
 
-    c.rive_setMetalTargetTexture(target, currentFrameSurface.texture());
+    c.rive_setMetalTargetTexture(target.*, currentFrameSurface.texture());
     const flushCommandBuffer = queue.commandBuffer().?;
 
     var flush = c.Rive_FlushResources{
-        .renderTarget = @ptrCast(target),
+        .renderTarget = @ptrCast(target.*),
         .externalCommandBuffer = flushCommandBuffer,
     };
 
@@ -120,6 +135,11 @@ fn riveRender(
     const presentCommandBuffer = queue.commandBuffer().?;
     presentCommandBuffer.presentDrawable(@ptrCast(currentFrameSurface));
     presentCommandBuffer.commit();
-    c.rive_setMetalTargetTexture(target, null);
+    c.rive_setMetalTargetTexture(target.*, null);
     presentCommandBuffer.waitUntilCompleted();
+    //
+    // currentFrameSurface.release();
+    // flushCommandBuffer.release();
+    // presentCommandBuffer.release();
+    objc.objc.autoreleasePoolPop(pool);
 }

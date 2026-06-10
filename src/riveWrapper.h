@@ -67,6 +67,8 @@ Rive_StateMachineInstance *
 rive_artboard_defaultStateMachine(Rive_ArtboardInstance *artboard);
 Rive_StateMachineInstance *
 rive_artboard_stateMachineAt(Rive_ArtboardInstance *artboard, size_t index);
+void rive_artboardSetWidth(Rive_ArtboardInstance* artboard, float width);
+void rive_artboardSetHeight(Rive_ArtboardInstance* artboard, float height);
 
 // rive::stateMachineInstance
 void rive_SMIadvanceAndApply(Rive_StateMachineInstance *sm, float secs);
@@ -90,6 +92,11 @@ void rive_setMetalTargetTexture(Rive_RenderTargetMetal *target, void *frame_surf
 void rive_rendererSave(Rive_RiveRenderer *renderer);
 void rive_rendererRestore(Rive_RiveRenderer* renderer);
 void rive_freeRenderer(Rive_RiveRenderer* renderer);
+void rive_rendererDPIScale(Rive_RiveRenderer* renderer, float dpiScale);
+
+//rive::renderTarget
+int rive_renderTargetGetWidth(void* target);
+int rive_renderTargetGetHeight(void* target);
 
 // BindeableArtboard
 

@@ -3,6 +3,7 @@
 #include "rive/artboard.hpp"
 #include "rive/factory.hpp"
 #include "rive/file.hpp"
+#include "rive/math/mat2d.hpp"
 #include "rive/renderer/render_context.hpp"
 #include "rive/renderer/render_target.hpp"
 #include "rive/renderer/rive_renderer.hpp"
@@ -109,6 +110,13 @@ void Rive_ArtboardReset(Rive_ArtboardInstance *artboard) {
   cpp_artboard->reset();
 }
 
+void rive_artboardSetWidth(Rive_ArtboardInstance *artboard, float width) {
+  reinterpret_cast<rive::ArtboardInstance *>(artboard)->width(width);
+}
+void rive_artboardSetHeight(Rive_ArtboardInstance *artboard, float height) {
+  reinterpret_cast<rive::ArtboardInstance *>(artboard)->height(height);
+}
+
 // rive::stateMachineInstance
 void rive_SMIadvanceAndApply(Rive_StateMachineInstance *sm, float secs) {
   if (sm) {
@@ -184,6 +192,14 @@ void rive_rendererRestore(Rive_RiveRenderer *renderer) {
   cpp_renderer->restore();
 }
 
+//TODO: temporary: this is too high level for this api. need to implement transform function
+
+void rive_rendererDPIScale(Rive_RiveRenderer* renderer, float dpiScale) {
+  auto* cpp_renderer = reinterpret_cast<rive::RiveRenderer*>(renderer);
+  cpp_renderer->transform(rive::Mat2D::fromScale(dpiScale, dpiScale));
+}
+
+
 // stub
 void rive_rendererAlign(Rive_RiveRenderer *renderer, Rive_Fit *fit,
                         Rive_Alignment *alignment, float scaleFactor) {
@@ -199,5 +215,14 @@ void rive_freeRenderer(Rive_RiveRenderer *renderer) {
 }
 
 // rive::gpu::RenderTarget
+int rive_renderTargetGetWidth(void *target) {
+  auto *cpp_target = static_cast<rive::gpu::RenderTarget *>(target);
+  return cpp_target->width();
+}
+
+int rive_renderTargetGetHeight(void *target) {
+  auto *cpp_target = static_cast<rive::gpu::RenderTarget *>(target);
+  return cpp_target->height();
+}
 
 } // end extern "C"

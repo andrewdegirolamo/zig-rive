@@ -33,6 +33,7 @@ Rive_RenderTargetMetal *rive_getMetalRenderTarget(Rive_RenderContext *context,
       cpp_context->static_impl_cast<rive::gpu::RenderContextMetalImpl>();
   return reinterpret_cast<Rive_RenderTargetMetal *>(
       renderContextImpl
+          // TODO: expose format
           ->makeRenderTarget(MTLPixelFormatBGRA8Unorm, width, height)
           .release());
 }
