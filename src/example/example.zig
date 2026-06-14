@@ -12,7 +12,7 @@ pub fn main() !void {
     //TODO fix memory leak, probably get rid of autoreleasepool
     //TODO start writing zig wrappper
 
-    const riv = @embedFile("doom-testing.riv");
+    const riv = @embedFile("fuecoco.riv");
 
     //initialize sdl
     try sdl3.init(.{ .video = true });

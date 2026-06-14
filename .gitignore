@@ -7,3 +7,4 @@ zig-out/bin
 .DS_Store
 zig-pkg/
 compile_commands.json
+src/assets/doom-testing.riv

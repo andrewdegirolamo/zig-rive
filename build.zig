@@ -18,13 +18,13 @@ pub fn build(b: *std.Build) void {
     });
 
     const translate_c = b.addTranslateC(.{
-        .root_source_file = b.path("src/riveWrapper.h"),
+        .root_source_file = b.path("src/c-api/riveWrapper.h"),
         .target = target,
         .optimize = optimize,
     });
     const c_mod = translate_c.createModule();
-    c_mod.addCSourceFile(.{ .file = b.path("src/riveWrapper.cpp") });
-    c_mod.addCSourceFile(.{ .file = b.path("src/metalsetup.mm") });
+    c_mod.addCSourceFile(.{ .file = b.path("src/c-api/riveWrapper.cpp") });
+    c_mod.addCSourceFile(.{ .file = b.path("src/c-api/metalsetup.mm") });
 
     const rive = b.addModule("zig_rive", .{
         .root_source_file = b.path("src/rive.zig"),
@@ -57,7 +57,7 @@ pub fn build(b: *std.Build) void {
     const example = b.addModule("sdl_rive_example", .{
         .target = target,
         .optimize = optimize,
-        .root_source_file = b.path("src/main.zig"),
+        .root_source_file = b.path("src/example/example.zig"),
         .imports = &.{
             // .{ .name = "rive", .module = mod },
             .{ .name = "sdl3", .module = sdl3.module("sdl3") },
