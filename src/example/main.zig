@@ -45,6 +45,8 @@ pub fn main() !void {
     const queue = mtlDevice.newCommandQueue() orelse @panic("null");
     const renderer = try renderContext.makeRenderer();
 
+    renderContext.setMetalCommandQueue(queue);
+
     const metalView = sdl3.MetalView.init(window);
     const metalLayer = metalView.?.getLayer();
     const swapchain: *objc.quartz_core.MetalLayer = @ptrCast(metalLayer);

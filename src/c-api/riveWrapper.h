@@ -79,6 +79,7 @@ void rive_contextBeginFrame(Rive_RenderContext *context,
                             Rive_FrameDescriptor fd);
 
 void rive_contextFlush(Rive_RenderContext *context, Rive_FlushResources *flush);
+void rive_setMetalCommandQueue(Rive_RenderContext *context, void *queue);
 
 Rive_Factory* rive_contextToFactory(Rive_RenderContext *context);
 

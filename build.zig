@@ -57,7 +57,7 @@ pub fn build(b: *std.Build) void {
     const example = b.addModule("sdl_rive_example", .{
         .target = target,
         .optimize = optimize,
-        .root_source_file = b.path("src/example/example.zig"),
+        .root_source_file = b.path("src/example/main.zig"),
         .imports = &.{
             // .{ .name = "rive", .module = mod },
             .{ .name = "sdl3", .module = sdl3.module("sdl3") },

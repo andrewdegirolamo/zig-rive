@@ -39,6 +39,11 @@ pub const RenderContext = struct {
         };
         c.rive_contextFlush(self.value, &fr);
     }
+
+    //TODO: This should really be specific to a metal implementation
+    pub inline fn setMetalCommandQueue(self: @This(), m_queue: ?*anyopaque) void {
+        c.rive_setMetalCommandQueue(self.value, m_queue);
+    }
 };
 
 pub const ContextOptions = struct {};

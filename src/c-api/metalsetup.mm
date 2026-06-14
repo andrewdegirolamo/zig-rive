@@ -38,6 +38,15 @@ Rive_RenderTargetMetal *rive_getMetalRenderTarget(Rive_RenderContext *context,
           .release());
 }
 
+void rive_setMetalCommandQueue(Rive_RenderContext *context, void *queue) {
+  auto *cpp_context = reinterpret_cast<rive::gpu::RenderContext *>(context);
+  auto *renderContextImpl =
+      cpp_context->static_impl_cast<rive::gpu::RenderContextMetalImpl>();
+  auto objc_queue = (__bridge id<MTLCommandQueue>)queue;
+
+  renderContextImpl->setCommandQueue(objc_queue);
+}
+
 void rive_setMetalTargetTexture(Rive_RenderTargetMetal *target, void *texture) {
   auto *cpp_target = reinterpret_cast<rive::gpu::RenderTargetMetal *>(target);
   auto obj_texture = (__bridge id<MTLTexture>)texture;
