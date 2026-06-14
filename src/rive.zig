@@ -1,3 +1,5 @@
+//! A lightweight zig wrapper for the Rive C++ runtime and renderer! I still gotta write better docs... gimme a bit
+
 pub const File = @import("File.zig");
 pub const Factory = @import("Factory.zig");
 pub const gpu = @import("gpu.zig");
