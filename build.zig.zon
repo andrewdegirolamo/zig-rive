@@ -4,14 +4,15 @@
     .fingerprint = 0x2ba3efe0afa7b22b, // Changing this has security and trust implications.
     .minimum_zig_version = "0.16.0",
     .dependencies = .{
-        //to update version, run zig fetch --save git+https://github.com/KnightOwl-Git/rive-zig-build
+        //to update version, run::
+        //zig fetch --save git+https://github.com/KnightOwl-Git/rive-zig-build
         .compile_commands = .{
             .url = "https://github.com/the-argus/zig-compile-commands/archive/9400cd1963ea6bb58fe47ba7d9700075b808cdd2.tar.gz",
             .hash = "zig_compile_commands-0.0.1-OZg5-e_JAAAGg1WHAePtq4l4Uvjs34BexnFFCZk63EaG",
         },
         .rive = .{
-            .url = "git+https://github.com/KnightOwl-Git/rive-zig-build#868738a456b3cb30d14eb68dab9246d44ae13591",
-            .hash = "rive-0.1.10802-QURrJf42AQCgi03No0POCUf_4yJ8WLP0j6OkASX0J0rc",
+            .url = "git+https://github.com/KnightOwl-Git/rive-zig-build#147e2d02412839538b8a4cefa7ca0688473f7ced",
+            .hash = "rive-0.1.10803-QURrJZc6AQDO3Y-uMTzNJcANurVpWwCc4V8sFGM1_7Sq",
         },
         .sdl3 = .{
             .url = "git+https://codeberg.org/7Games/zig-sdl3?ref=v0.2.1#7cf436e4a8622a0232e53ea5cb4df82e8cadaaaa",

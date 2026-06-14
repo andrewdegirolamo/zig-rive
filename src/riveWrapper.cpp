@@ -1,4 +1,3 @@
-
 #include "rive/animation/state_machine_instance.hpp"
 #include "rive/artboard.hpp"
 #include "rive/factory.hpp"
@@ -137,14 +136,14 @@ void rive_SMIdraw(Rive_StateMachineInstance *sm, Rive_RiveRenderer *renderer) {
 
 // rive::renderContext
 void rive_contextBeginFrame(Rive_RenderContext *context,
-                            Rive_FrameDescriptor *fd) {
+                            Rive_FrameDescriptor fd) {
   if (context) {
     auto *cpp_context = reinterpret_cast<rive::gpu::RenderContext *>(context);
 
     cpp_context->beginFrame({
-        .renderTargetWidth = fd->render_target_width,
-        .renderTargetHeight = fd->render_target_height,
-        .clearColor = fd->clear_color,
+        .renderTargetWidth = fd.render_target_width,
+        .renderTargetHeight = fd.render_target_height,
+        .clearColor = fd.clear_color,
     });
   }
 }
@@ -154,12 +153,11 @@ void rive_contextFlush(Rive_RenderContext *context,
   if (context) {
     rive::gpu::RenderContext *cpp_context =
         reinterpret_cast<rive::gpu::RenderContext *>(context);
-    rive::gpu::RenderContext::FlushResources cpp_flush =
-        rive::gpu::RenderContext::FlushResources{
+    
+    cpp_context->flush({
             .renderTarget = reinterpret_cast<rive::gpu::RenderTarget *>(
                 flush->renderTarget),
-            .externalCommandBuffer = flush->externalCommandBuffer};
-    cpp_context->flush(cpp_flush);
+            .externalCommandBuffer = flush->externalCommandBuffer});
   }
 }
 

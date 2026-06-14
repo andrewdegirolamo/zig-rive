@@ -10,7 +10,7 @@ extern "C" {
 // These are opaque type handles
 typedef struct Rive_File Rive_File;
 typedef struct Rive_Factory Rive_Factory;
-typedef struct Rive_Artboard_Instance Rive_ArtboardInstance;
+typedef struct Rive_ArtboardInstance Rive_ArtboardInstance;
 typedef struct Rive_StateMachineInstance Rive_StateMachineInstance;
 typedef struct Rive_RenderContext Rive_RenderContext;
 typedef struct Rive_FrameDescriptor {
@@ -76,7 +76,8 @@ void rive_SMIdraw(Rive_StateMachineInstance* sm, Rive_RiveRenderer* renderer); /
 
 // rive::RenderContext
 void rive_contextBeginFrame(Rive_RenderContext *context,
-                            Rive_FrameDescriptor *fd);
+                            Rive_FrameDescriptor fd);
+
 void rive_contextFlush(Rive_RenderContext *context, Rive_FlushResources *flush);
 
 Rive_Factory* rive_contextToFactory(Rive_RenderContext *context);

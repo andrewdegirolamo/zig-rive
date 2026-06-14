@@ -3,6 +3,8 @@ const zcc = @import("compile_commands");
 
 pub fn build(b: *std.Build) void {
 
+    //TODO: Cleanup
+
     // make a list of targets that have include files and c source files
     var targets: std.ArrayList(*std.Build.Step.Compile) = .empty;
 
@@ -10,7 +12,7 @@ pub fn build(b: *std.Build) void {
 
     const optimize = b.standardOptimizeOption(.{});
 
-    const rive = b.dependency("rive", .{
+    const rive_dep = b.dependency("rive", .{
         .target = target,
         .optimize = optimize,
     });
@@ -24,19 +26,27 @@ pub fn build(b: *std.Build) void {
     c_mod.addCSourceFile(.{ .file = b.path("src/riveWrapper.cpp") });
     c_mod.addCSourceFile(.{ .file = b.path("src/metalsetup.mm") });
 
-    const rivezig_mod = b.addModule("zig_rive", .{
-        // .root_source_file = b.path("src/root.zig"),
+    const rive = b.addModule("zig_rive", .{
+        .root_source_file = b.path("src/rive.zig"),
         .target = target,
         .optimize = optimize,
-        // .imports = &.{ .{ .name = "rive", .module = rive.module("rive_mod") }, .{ .name = "rive_renderer", .module = rive.module("rive_renderer_mod") } },
         .link_libc = true,
         .link_libcpp = true,
+        .imports = &.{
+            .{ .name = "c", .module = c_mod },
+        }, //eventually put this in mod and import mod instead
+    });
+
+    const rive_lib = b.addLibrary(.{
+        .name = "rive",
+        .root_module = rive,
     });
 
     const sdl3 = b.dependency("sdl3", .{
         .target = target,
         .optimize = optimize,
     });
+
     //platform specific
 
     const objc = b.dependency("mach_objc", .{
@@ -52,6 +62,7 @@ pub fn build(b: *std.Build) void {
             // .{ .name = "rive", .module = mod },
             .{ .name = "sdl3", .module = sdl3.module("sdl3") },
             .{ .name = "c", .module = c_mod }, //eventually put this in mod and import mod instead
+            .{ .name = "rive", .module = rive },
             .{ .name = "objc", .module = objc.module("mach-objc") },
         },
     });
@@ -62,19 +73,19 @@ pub fn build(b: *std.Build) void {
     });
     b.installArtifact(exe);
 
-    const riveLib = rive.artifact("rive");
-    const riveRendererLib = rive.artifact("rive_renderer");
+    const rive_cpp_lib = rive_dep.artifact("rive");
+    const riveRenderer_lib = rive_dep.artifact("rive_renderer");
     // targets.append(b.allocator, riveLib) catch @panic("OOM");
     // targets.append(b.allocator, riveRendererLib) catch @panic("OOM");
 
-    rivezig_mod.linkLibrary(riveLib);
+    rive.linkLibrary(rive_cpp_lib);
     // mod.linkFramework("Metal", .{});
-    rivezig_mod.linkLibrary(riveRendererLib);
-    c_mod.linkLibrary(riveLib);
-    c_mod.linkLibrary(riveRendererLib);
+    rive.linkLibrary(riveRenderer_lib);
+    c_mod.linkLibrary(rive_cpp_lib);
+    c_mod.linkLibrary(riveRenderer_lib);
     c_mod.linkFramework("Metal", .{});
     c_mod.linkFramework("Foundation", .{});
-    const lib = b.addLibrary(.{ .name = "riveZig", .root_module = rivezig_mod });
+    const lib = b.addLibrary(.{ .name = "riveZig", .root_module = rive });
 
     targets.append(b.allocator, lib) catch @panic("OOM");
 
@@ -86,4 +97,25 @@ pub fn build(b: *std.Build) void {
 
     const run = b.step("run", "run sdl3 example");
     run.dependOn(&run_exe.step);
+
+    //ZLS check step for build-on-save errors
+    const exe_check = b.addExecutable(.{
+        .name = "foo",
+        .root_module = example,
+    });
+
+    //generate documentation
+
+    const install_docs = b.addInstallDirectory(.{
+        .source_dir = rive_lib.getEmittedDocs(),
+        .install_dir = .{ .prefix = {} },
+        .install_subdir = "docs",
+    });
+
+    const docs_step = b.step("docs", "Generate documentation for Zig-Rive");
+
+    docs_step.dependOn(&install_docs.step);
+
+    const check = b.step("check", "Check if foo compiles");
+    check.dependOn(&exe_check.step);
 }
