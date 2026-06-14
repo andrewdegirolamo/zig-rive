@@ -1,3 +1,5 @@
+//! Documentation forthcoming
+
 const c = @import("c");
 const Factory = @import("Factory.zig");
 const errors = @import("errrors.zig");
