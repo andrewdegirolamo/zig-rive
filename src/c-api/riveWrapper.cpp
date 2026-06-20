@@ -13,6 +13,7 @@
 #include "rive/viewmodel/runtime/viewmodel_runtime.hpp"
 #include "rive/viewmodel/viewmodel_instance.hpp"
 #include "rive/viewmodel/viewmodel_instance_boolean.hpp"
+#include "rive/viewmodel/viewmodel_instance_color.hpp"
 #include "rive/viewmodel/viewmodel_instance_number.hpp"
 #include "rive/viewmodel/viewmodel_instance_trigger.hpp"
 #include "rive/viewmodel/viewmodel_instance_value.hpp"
@@ -339,6 +340,19 @@ Rive_VMI_Trigger *rive_getVMITrigger(Rive_ViewModelInstance *self,
 
 }
 
+Rive_VMI_Color *rive_getVMIColor(Rive_ViewModelInstance *self,
+                                 const char *name) {
+  auto *cpp_vmi = reinterpret_cast<rive::ViewModelInstance *>(self);
+  auto propValue = cpp_vmi->propertyValue(name);
+  if (propValue) {
+    auto vmiColor = propValue->as<rive::ViewModelInstanceColor>();
+    return reinterpret_cast<Rive_VMI_Color *>(vmiColor);
+
+  } else {
+    return nullptr;
+  }
+}
+
 // View Model Property setters and getters
 
 float rive_getVMINumberValue(Rive_VMI_Number *self) {
@@ -349,6 +363,16 @@ float rive_getVMINumberValue(Rive_VMI_Number *self) {
 void rive_setVMINumberValue(Rive_VMI_Number *self, float value) {
   auto *cpp_num = reinterpret_cast<rive::ViewModelInstanceNumber *>(self);
   cpp_num->propertyValue(value);
+}
+
+uint32_t rive_getVMIColorValue(Rive_VMI_Color *self) {
+  auto *cpp_color = reinterpret_cast<rive::ViewModelInstanceColor *>(self);
+  return cpp_color->propertyValue();
+}
+
+void rive_setVMIColorValue(Rive_VMI_Color *self, uint32_t value) {
+  auto *cpp_color = reinterpret_cast<rive::ViewModelInstanceColor *>(self);
+  cpp_color->propertyValue(value);
 }
 
 bool rive_getVMIBooleanValue(Rive_VMI_Boolean *self) {

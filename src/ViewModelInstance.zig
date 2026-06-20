@@ -15,6 +15,16 @@ pub fn getNumber(self: @This(), name: [:0]const u8) !Number {
     }
 }
 
+pub fn getColor(self: @This(), name: [:0]const u8) !Color {
+    const ret = c.rive_getVMIColor(self.value, name);
+
+    if (ret) |col| {
+        return .{ .ref = col };
+    } else {
+        return error.PropertyNotFound;
+    }
+}
+
 pub fn getTrigger(self: @This(), name: [:0]const u8) !Trigger {
     const ret = c.rive_getVMITrigger(self.value, name);
 
@@ -34,6 +44,16 @@ pub const Number = struct {
     }
     pub inline fn setValue(self: Number, value: f32) void {
         return c.rive_setVMINumberValue(self.ref, value);
+    }
+};
+
+pub const Color = struct {
+    ref: *c.Rive_VMI_Color,
+    pub inline fn getValue(self: Color) u32 {
+        return c.rive_getVMIColorValue(self.ref);
+    }
+    pub inline fn setValue(self: Color, value: u32) void {
+        return c.rive_setVMIColorValue(self.ref, value);
     }
 };
 

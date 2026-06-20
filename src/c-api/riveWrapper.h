@@ -152,10 +152,14 @@ Rive_VMI_Boolean *rive_getVMIBoolean(Rive_ViewModelInstance *self,
                                      const char *name);
 Rive_VMI_Trigger *rive_getVMITrigger(Rive_ViewModelInstance *self,
                                      const char *name);
+Rive_VMI_Color *rive_getVMIColor(Rive_ViewModelInstance *self,
+                                 const char *name);
 float rive_getVMINumberValue(Rive_VMI_Number *self);
 void rive_setVMINumberValue(Rive_VMI_Number *self, float value);
 bool rive_getVMIBooleanValue(Rive_VMI_Boolean *self);
 void rive_setVMIBooleanValue(Rive_VMI_Boolean *self, bool value);
+uint32_t rive_getVMIColorValue(Rive_VMI_Color *self);
+void rive_setVMIColorValue(Rive_VMI_Color *self, uint32_t value);
 uint32_t rive_getVMITriggerValue(Rive_VMI_Trigger *self);
 void rive_fireVMITrigger(Rive_VMI_Trigger *self);
 void rive_VMITriggerSetCallback(Rive_VMI_Trigger *self, void (*callback)());
