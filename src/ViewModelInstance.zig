@@ -25,6 +25,16 @@ pub fn getColor(self: @This(), name: [:0]const u8) !Color {
     }
 }
 
+pub fn getEnum(self: @This(), name: [:0]const u8) !Enum {
+    const ret = c.rive_getVMIEnum(self.value, name);
+
+    if (ret) |enm| {
+        return .{ .ref = enm };
+    } else {
+        return error.PropertyNotFound;
+    }
+}
+
 pub fn getTrigger(self: @This(), name: [:0]const u8) !Trigger {
     const ret = c.rive_getVMITrigger(self.value, name);
 
@@ -54,6 +64,16 @@ pub const Color = struct {
     }
     pub inline fn setValue(self: Color, value: u32) void {
         return c.rive_setVMIColorValue(self.ref, value);
+    }
+};
+
+pub const Enum = struct {
+    ref: *c.Rive_VMI_Enum,
+    pub inline fn getValue(self: Enum) u32 {
+        return c.rive_getVMIEnumValue(self.ref);
+    }
+    pub inline fn setValue(self: Enum, value: u32) void {
+        return c.rive_setVMIEnumValue(self.ref, value);
     }
 };
 
