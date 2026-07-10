@@ -11,8 +11,8 @@
             .hash = "zig_compile_commands-0.0.1-OZg5-e_JAAAGg1WHAePtq4l4Uvjs34BexnFFCZk63EaG",
         },
         .rive = .{
-            .url = "git+https://github.com/KnightOwl-Git/rive-zig-build#0be8c243e4bcb1f113b0f93162dc08f9c7a854d8",
-            .hash = "rive-0.1.10804-QURrJcc6AQDXZuWkJEcssJ9bcvOz04LweK24pvOV-vBn",
+            .url = "git+https://github.com/KnightOwl-Git/rive-zig-build#4a92dbbe358517697f10dc7e85d38e1fcc350a12",
+            .hash = "rive-0.1.169-QURrJcQ6AQDYG_6x_9rOVODCuyYKyvH_mysKDFLAsPMM",
         },
         .sdl3 = .{
             .url = "git+https://codeberg.org/7Games/zig-sdl3?ref=v0.2.1#7cf436e4a8622a0232e53ea5cb4df82e8cadaaaa",

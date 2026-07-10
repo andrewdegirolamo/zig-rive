@@ -48,6 +48,8 @@ typedef struct Rive_VMI_Color Rive_VMI_Color;
 typedef struct Rive_VMI_Boolean Rive_VMI_Boolean;
 typedef struct Rive_VMI_Trigger Rive_VMI_Trigger;
 typedef struct Rive_VMI_Enum Rive_VMI_Enum;
+typedef struct Rive_VMI_List Rive_VMI_List;
+typedef struct Rive_VMI_Enum Rive_VMI_ListItem;
 typedef struct Rive_VMI_Property Rive_VMI_Property;
 
 typedef enum {
@@ -79,6 +81,7 @@ Rive_ViewModelRuntime *
 rive_defaultArtboardViewModel(Rive_File *file, Rive_ArtboardInstance *artboard);
 Rive_ViewModelInstance *rive_createDefaultViewModelInstanceFromArtboard(
     Rive_File *self, Rive_ArtboardInstance *artboard);
+Rive_VMI_ListItem* rive_VMIlistItemInit(Rive_ViewModelInstance *self);
 
 // rive::Artboard
 size_t rive_artboard_stateMachineCount(Rive_ArtboardInstance *artboard);
@@ -156,6 +159,8 @@ Rive_VMI_Color *rive_getVMIColor(Rive_ViewModelInstance *self,
                                  const char *name);
 Rive_VMI_Enum *rive_getVMIEnum(Rive_ViewModelInstance *self,
                                const char *name);
+Rive_VMI_List *rive_getVMIList(Rive_ViewModelInstance *self, const char *name);
+
 float rive_getVMINumberValue(Rive_VMI_Number *self);
 void rive_setVMINumberValue(Rive_VMI_Number *self, float value);
 bool rive_getVMIBooleanValue(Rive_VMI_Boolean *self);
@@ -167,6 +172,15 @@ void rive_setVMIEnumValue(Rive_VMI_Enum *self, uint32_t value);
 uint32_t rive_getVMITriggerValue(Rive_VMI_Trigger *self);
 void rive_fireVMITrigger(Rive_VMI_Trigger *self);
 void rive_VMITriggerSetCallback(Rive_VMI_Trigger *self, void (*callback)());
+
+Rive_VMI_ListItem* rive_getVMIListItem(Rive_VMI_List *self, uint32_t index);
+void rive_VMIListAddItem(Rive_VMI_List *self, Rive_VMI_ListItem* item);
+void rive_VMIListAddItemAt(Rive_VMI_List *self, Rive_VMI_ListItem* item, int index);
+void rive_VMIListRemoveAll(Rive_VMI_List *self);
+void rive_VMIListRemoveItemAt(Rive_VMI_List *self, int index);
+Rive_VMI_ListItem* rive_VMIListPop(Rive_VMI_List *self);
+void rive_VMIlistItemAddVMI(Rive_VMI_ListItem * self, Rive_ViewModelInstance *vmi);
+
 
 #ifdef __cplusplus
 }

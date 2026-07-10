@@ -47,3 +47,12 @@ pub inline fn createDefaultViewModelInstance(self: @This(), ab: rive.artboard.Ar
         return error.CouldNotCreateDefaultViewModelInstance;
     }
 }
+
+pub inline fn createViewModelInstance(self: @This(), name: [:0]const u8) !rive.ViewModelInstance {
+    const ret = c.rive_createViewModelInstance(self.value, name);
+    if (ret) |vmi| {
+        return .{ .value = vmi };
+    } else {
+        return error.CouldNotCreateViewModelInstance;
+    }
+}

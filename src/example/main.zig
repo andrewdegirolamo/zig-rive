@@ -63,7 +63,7 @@ fn riveThread(
     window: ?*objc.app_kit.Window,
     metal_impl: *rive.MetalImpl,
 ) !void {
-    const riv = @embedFile("fuecoco.riv");
+    const riv = @embedFile("lp_level_editor.riv");
     const file = try rive.File.import(riv, metal_impl.renderContext);
 
     const artboard = try file.artboardDefault();
