@@ -53,7 +53,7 @@ pub fn getEnum(self: @This(), name: [:0]const u8) !Enum {
         return error.PropertyNotFound;
     }
 }
-pub fn getList(self: @This(), name: [:0]const u8) !Enum {
+pub fn getList(self: @This(), name: [:0]const u8) !List {
     const ret = c.rive_getVMIList(self.value, name);
 
     if (ret) |enm| {
