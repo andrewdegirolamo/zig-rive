@@ -4,6 +4,7 @@
 #include "rive/file.hpp"
 #include "rive/math/mat2d.hpp"
 #include "rive/refcnt.hpp"
+#include "rive/renderer/gpu.hpp"
 #include "rive/renderer/render_context.hpp"
 #include "rive/renderer/render_target.hpp"
 #include "rive/renderer/rive_renderer.hpp"
@@ -214,6 +215,7 @@ void rive_contextBeginFrame(Rive_RenderContext *context,
     cpp_context->beginFrame({
         .renderTargetWidth = fd.render_target_width,
         .renderTargetHeight = fd.render_target_height,
+        .loadAction = rive::gpu::LoadAction::clear,
         .clearColor = fd.clear_color,
     });
   }

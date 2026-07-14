@@ -62,8 +62,13 @@ pub fn getList(self: @This(), name: [:0]const u8) !List {
         return error.PropertyNotFound;
     }
 }
-pub fn createListItem(self: @This()) List.ListItem {
-    return .{ .ref = c.rive_VMIlistItemInit(self.value) };
+pub fn createListItem(self: @This()) !List.ListItem {
+    const ret = c.rive_VMIlistItemInit(self.value);
+    if (ret) |item| {
+        return .{ .ref = item };
+    } else {
+        return error.createListItemFailed;
+    }
 }
 
 //using ref instead of value so as not to conflate with view model property values

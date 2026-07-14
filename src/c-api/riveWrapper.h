@@ -81,6 +81,8 @@ Rive_ViewModelRuntime *
 rive_defaultArtboardViewModel(Rive_File *file, Rive_ArtboardInstance *artboard);
 Rive_ViewModelInstance *rive_createDefaultViewModelInstanceFromArtboard(
     Rive_File *self, Rive_ArtboardInstance *artboard);
+Rive_ViewModelInstance * rive_createViewModelInstance(Rive_File *file, const char *name);
+
 Rive_VMI_ListItem* rive_VMIlistItemInit(Rive_ViewModelInstance *self);
 
 // rive::Artboard

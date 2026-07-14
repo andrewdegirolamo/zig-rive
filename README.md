@@ -1,4 +1,4 @@
-Binding for the Rive C++ runtime for Zig. Right now this is just a C API and an example of how to use it written in zig (Only metal implementation so far)
+Zig Bindings for the Rive C++ runtime. An example implementation for metal (other backends coming soon) can be found in the examples/ directory.
 
 
 Mac build prerequisites:
