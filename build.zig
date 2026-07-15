@@ -27,6 +27,15 @@ pub fn build(b: *std.Build) void {
     c_mod.addCSourceFile(.{ .file = b.path("src/c-api/metalsetup.mm") });
     c_mod.addCMacro("WITH_RIVE_TOOLS", "1");
 
+    const vulkan = b.option(bool, "vulkan", "build the vulkan example (requires a vulkan-enabled rive-zig-build)") orelse false;
+
+    if (vulkan) {
+        c_mod.addCSourceFile(.{ .file = b.path("src/c-api/vulkansetup.cpp") });
+        c_mod.addCMacro("RIVE_VULKAN", "");
+        c_mod.addIncludePath(rive_dep.builder.dependency("rive", .{}).path("renderer/rive_vk_bootstrap/include"));
+        c_mod.addIncludePath(rive_dep.builder.dependency("Vulkan-Headers", .{}).path("include"));
+    }
+
     const objc = b.dependency("mach_objc", .{
         .target = target,
         .optimize = optimize,
@@ -99,6 +108,28 @@ pub fn build(b: *std.Build) void {
 
     const run = b.step("run", "run sdl3 example");
     run.dependOn(&run_exe.step);
+
+    if (vulkan) {
+        const example_vulkan = b.addModule("sdl_rive_example_vulkan", .{
+            .target = target,
+            .optimize = optimize,
+            .root_source_file = b.path("src/example/main_vulkan.zig"),
+            .imports = &.{
+                .{ .name = "sdl3", .module = sdl3.module("sdl3") },
+                .{ .name = "c", .module = c_mod },
+                .{ .name = "rive", .module = rive },
+            },
+        });
+
+        const exe_vulkan = b.addExecutable(.{
+            .name = "Rive SDL Vulkan Example",
+            .root_module = example_vulkan,
+        });
+        b.installArtifact(exe_vulkan);
+
+        const run_vulkan = b.step("run-vulkan", "run sdl3 vulkan example");
+        run_vulkan.dependOn(&b.addRunArtifact(exe_vulkan).step);
+    }
 
     //ZLS check step for build-on-save errors
     const exe_check = b.addExecutable(.{

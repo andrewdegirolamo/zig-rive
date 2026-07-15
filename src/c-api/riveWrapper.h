@@ -128,6 +128,18 @@ void rive_setMetalTargetTexture(Rive_RenderTargetMetal *target,
 
 int rive_metalRenderTargetRelease(Rive_RenderTargetMetal *self);
 
+typedef struct Rive_VulkanImpl Rive_VulkanImpl;
+
+Rive_VulkanImpl *rive_vulkanInit(const char *const *instance_extensions,
+                                 uint32_t extension_count);
+void *rive_vulkanGetVkInstance(Rive_VulkanImpl *self);
+Rive_RenderContext *rive_vulkanGetRenderContext(Rive_VulkanImpl *self);
+bool rive_vulkanInitSwapchain(Rive_VulkanImpl *self, void *vk_surface);
+bool rive_vulkanBeginFrame(Rive_VulkanImpl *self, uint32_t *out_width,
+                           uint32_t *out_height);
+void rive_vulkanFlushAndPresent(Rive_VulkanImpl *self);
+void rive_vulkanFree(Rive_VulkanImpl *self);
+
 // rive::RiveRenderer
 void rive_rendererSave(Rive_RiveRenderer *renderer);
 void rive_rendererRestore(Rive_RiveRenderer *renderer);

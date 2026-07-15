@@ -11,4 +11,5 @@ pub const ViewModelInstance = @import("ViewModelInstance.zig");
 
 pub const RiveRenderer = @import("RiveRenderer.zig");
 pub const MetalImpl = @import("implementations/metal.zig");
+pub const VulkanImpl = @import("implementations/vulkan.zig");
 //TODO:: Categorize this better?
